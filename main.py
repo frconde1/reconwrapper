@@ -24,7 +24,13 @@ def main():
             break 
         print("Dominio inválido!")
     agregarHost(ip, dominio)
-    menu(ip, dominio)
+    while True:
+        menu(ip, dominio)
+        otra = input("¿Realizar otro escaneo? (s/n): ")
+        if otra.lower() != "s":
+            print("Saliendo...")
+            break
+
 
 def clear_screen():
     # For Windows (os.name is 'nt')
@@ -45,21 +51,32 @@ def menu(ip, dominio):
         try: 
 
             valor = int(modo)
-            if 1<=valor<=4: 
-                return valor 
+            if 1<=valor<=4:
+                escaneo(valor, ip, dominio)
+                break
             print("Valor inválido!")
         except ValueError:
             print("Valor inválido!")
             continue
 
 
-    escaneo(modo, ip, dominio)
-
-
 
 
 def escaneo(modo, ip, dominio):
-    print("hola")
+    output_file = f"recon{dominio}"
+
+    match modo:
+        case 1:
+            flags = ["-sV", "-sC", "--top-ports", "1000", "-oN", f"{output_file}_común.txt"]
+        case 2:
+            flags = ["-sV", "-sC", "-p-", "-oN", f"{output_file}_total.txt"]
+        case 3:
+            flags = ["-sS", "-p-", "-oN", f"{output_file}_sigiloso.txt"]
+        case 4:
+            flags = ["-sU", "--top-ports", "200", "-oN", f"{output_file}_udp.txt"]
+    print(f"[*] Iniciando escaneo sobre {ip}...")
+    subprocess.run(["nmap"] + flags + [ip])
+    print(f"[+] Resultado guardado en {output_file}...")
 
 def check(ip):
 

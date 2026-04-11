@@ -1,0 +1,12 @@
+# Outputs de nmap
+*.txt
+*.xml
+*.gnmap
+
+# Python
+__pycache__/
+*.pyc
+.env
+
+# Por si usás venv
+venv/
