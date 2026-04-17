@@ -4,7 +4,7 @@ import re
 import sys
 from hosts import agregarHost, obtenerIpDeHosts
 from scanner import escaneo
-from utils import check, checkDom, clear_screen, info, ok, error, warning
+from utils import check, checkDom, clear_screen, info, ok, error, warning, presentacion
 
 if os.geteuid() != 0:
     error("Ejecutar como root!")
@@ -43,8 +43,9 @@ def main():
             break
 
 
-def menu(ip, dominio): 
+def menu(ip, dominio):
     clear_screen()
+    presentacion()
     info(f"Target: {ip} → {dominio}")
     print("─" * 30)
     info("[1] - Escaneo total")
